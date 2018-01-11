@@ -1,4 +1,6 @@
-# Script to solve a sudoku puzzle
+"""
+
+# Script to solve a sudoku puzzle.
 
 # The algorithm will work by first finding low hanging fruit
 # and if no obvious moves available use a standard backtracking algorithm
@@ -9,125 +11,148 @@
 
 # 0 represents empty square
 
+"""
 
 
-test = [[8,0,0,4,0,0,6,0,1],
-        [2,0,0,6,0,5,8,4,0],
-        [0,0,0,0,0,0,0,5,0],
-        [0,0,6,5,4,0,0,0,8],
-        [5,0,0,0,0,0,0,1,0],
-        [0,0,1,8,2,0,0,0,3],
-        [0,0,0,0,0,0,0,9,0],
-        [6,0,0,1,0,8,4,7,0],
-        [3,0,0,9,0,0,1,0,5]]
+test = [[8, 0, 0, 4, 0, 0, 6, 0, 1],
+        [2, 0, 0, 6, 0, 5, 8, 4, 0],
+        [0, 0, 0, 0, 0, 0, 0, 5, 0],
+        [0, 0, 6, 5, 4, 0, 0, 0, 8],
+        [5, 0, 0, 0, 0, 0, 0, 1, 0],
+        [0, 0, 1, 8, 2, 0, 0, 0, 3],
+        [0, 0, 0, 0, 0, 0, 0, 9, 0],
+        [6, 0, 0, 1, 0, 8, 4, 7, 0],
+        [3, 0, 0, 9, 0, 0, 1, 0, 5]]
 
 
-class gameOfSudoku:
+class GameOfSudoku:
+    """
 
+    Class which takes a unsolved puzzle and solves it.
+
+    This class contains a check functions is_valid & check_list.
+    Can find elements of the board like get_neg.
+    Also there are three functions which add elements to the board.
+    The final function contains a backtracking recursive function
+    which also can return the faliure conditon if reached.
+
+    """
+
+    # Parse the inputted board to the game
     def __init__(self, game):
+        """__init__ takes a 2d list which becomes the board."""
         self.board = game
 
     # Check validity
-    def isValid(self):
+    def is_valid(self):
+        """
 
+        Check if the initial board makes is valid.
+
+        The function takes the class GameOfSudoku and checks the board.
+        Normal errors are duplicated entries in the same row, box or columns.
+
+        """
         # Valid key
         validity = 0
 
         # Check each row
         for row in self.board:
-            if checkList(row) == False:
+            if not check_list(row):
                 validity = validity + 1
 
         # Check each column
         for col in range(0, 9):
-            flatCol = []
+            flat_col = []
             for row in self.board:
-                flatCol.append(row[col])
-            if checkList(flatCol) == False:
+                flat_col.append(row[col])
+            if not check_list(flat_col):
                 validity = validity + 1
 
-
         # Check each 9x9 square
-        for colStart in [0, 3, 6]:
-            for rowStart in [0, 3, 6]:
-                flatSquare = []
-                for col in range(colStart,colStart+3):
-                    for row in range(rowStart, rowStart+3):
-                        flatSquare.append(self.board[row][col])
-                if checkList(flatSquare) == False:
+        for col_start in [0, 3, 6]:
+            for row_start in [0, 3, 6]:
+                flat_square = []
+                for col in range(col_start, col_start+3):
+                    for row in range(row_start, row_start+3):
+                        flat_square.append(self.board[row][col])
+                if not check_list(flat_square):
                     validity = validity + 1
 
         # output
         return(validity == 0)
 
-
-
-    # Check if any value in a list is repeated
-    def checkList(entity):
-        for key in range(0, 9):
-            for compare in range(key+1, 9):
-                if (entity[key] == entity[compare]) & (entity[key] != 0):
-                    return(False)
-        return(True)
-
-
-
     # Possible moves for each cell
-    def availableEntries(self, rowLoc, colLoc):
+    def available_entries(self, row_loc, col_loc):
+        """
 
+        Obtain possible moves for a individual square.
+
+        Works by checking what is not currently in the row.
+        What is not currently in the column and lastly the square.
+
+        """
         # CheckRow
-        fromRow = []
+        from_row = []
         for value in range(1, 10):
-            if (value in self.board[rowLoc]) == False:
-                fromRow.append(value)
+            if not (value in self.board[row_loc]):
+                from_row.append(value)
 
         # Check column
-        fromCol = []
-        flatCol = []
+        from_col = []
+        flat_col = []
         for row in self.board:
-            flatCol.append(row[colLoc])
+            flat_col.append(row[col_loc])
         for value in range(1, 10):
-            if (value in flatCol) == False:
-                fromCol.append(value)
+            if not (value in flat_col):
+                from_col.append(value)
 
         # Check square
-        fromSquare = []
+        from_square = []
 
-        if rowLoc/3 < 1:
-            startRow = 0
-        elif rowLoc/3 < 2:
-            startRow = 3
+        # Which row does the square start
+        if row_loc/3 < 1:
+            start_row = 0
+        elif row_loc/3 < 2:
+            start_row = 3
         else:
-            startRow = 6
+            start_row = 6
 
-        if colLoc/3 < 1:
-            startCol = 0
-        elif colLoc/3 < 2:
-            startCol = 3
+        # Whcih column does the square start
+        if col_loc/3 < 1:
+            start_col = 0
+        elif col_loc/3 < 2:
+            start_col = 3
         else:
-            startCol = 6
+            start_col = 6
 
-        flatSquare = []
-        for col in range(startCol,startCol+3):
-            for row in range(startRow, startRow+3):
-                flatSquare.append(self.board[row][col])
+        # Add the values to the square
+        flat_square = []
+        for col in range(start_col, start_col+3):
+            for row in range(start_row, start_row+3):
+                flat_square.append(self.board[row][col])
         for value in range(1, 10):
-            if (value in flatSquare) == False:
-                fromSquare.append(value)
+            if not (value in flat_square):
+                from_square.append(value)
 
         # Check each value is in the all 3 lists
         output = []
-        for value in fromRow:
-            if (value in fromCol) & (value in fromSquare):
+        for value in from_row:
+            if (value in from_col) & (value in from_square):
                 output.append(value)
 
         return(output)
 
-
-
     # Find possible valid moves
-    def getMoves(self):
+    def get_moves(self):
+        """
 
+        Take the board and return the possible moves for each box in the 9x9
+        grid.
+
+        The function creates a negative of the board with every possible move.
+
+        """
         available = []
         # Iterate through grid
         for row in range(0, 9):
@@ -140,23 +165,18 @@ class gameOfSudoku:
             available.append(rowList)
         return(available)
 
-
-
     # Easiest moves
-    def addEasy(self, neg):
+    def add_easy(self, neg):
         for row in range(0, 9):
             for col in range(0, 9):
                 if len(neg[row][col]) == 1:
                     self.board[row][col] = neg[row][col][0]
 
-
-
-
     # Easy rows
-    def easyRows(self, neg):
+    def easy_rows(self, neg):
         for row in range(0, 9):
             for val in range(1, 10):
-                if (val in self.board[row]) == False:
+                if not (val in self.board[row]):
                     possible = []
                     for col in range(0, 9):
                         if val in neg[row][col]:
@@ -164,16 +184,14 @@ class gameOfSudoku:
                     if len(possible) == 1:
                         self.board[row][possible[0]] = val
 
-
-
 # Easy columns
-    def easyColumns(self, neg):
+    def easy_columns(self, neg):
         for col in range(0, 9):
-            flatCol = []
+            flat_col = []
             for row in self.board:
-                flatCol.append(row[col])
+                flat_col.append(row[col])
             for val in range(1, 10):
-                if (val in flatCol) == False:
+                if not (val in flat_col):
                     possible = []
                     for secRow in range(0, 9):
                         if val in neg[secRow][col]:
@@ -181,85 +199,70 @@ class gameOfSudoku:
                     if len(possible) == 1:
                         self.board[possible[0]][col] = val
 
-
-
-# Check if there is only one possible value in the square
-    def easySquare(self, neg):
-        for colStart in [0, 3, 6]:
-            for rowStart in [0, 3, 6]:
-                flatSquare = []
-                for col in range(colStart,colStart+3):
-                    for row in range(rowStart, rowStart+3):
-                        flatSquare.append(self.board[row][col])
+    # Check if there is only one possible value in the square
+    def easy_square(self, neg):
+        for col_start in [0, 3, 6]:
+            for row_start in [0, 3, 6]:
+                flat_square = []
+                for col in range(col_start, col_start+3):
+                    for row in range(row_start, row_start+3):
+                        flat_square.append(self.board[row][col])
                 for val in range(1, 10):
-                    if (val in flatSquare) == False:
+                    if not (val in flat_square):
                         possible = []
-                        for col in range(colStart,colStart+3):
-                            for row in range(rowStart, rowStart+3):
+                        for col in range(col_start, col_start+3):
+                            for row in range(row_start, row_start+3):
                                 if val in neg[row][col]:
                                     possible.append((row, col))
                         if len(possible) == 1:
                             self.board[possible[0][0]][possible[0][1]] = val
 
+    def back_track(self):
+        """
 
-    def zeroCheck(grid):
+        Back track recursive function.
 
-        zeros = 0
-        for row in grid:
-            for element in row:
-                if element == 0:
-                    zeros = zeros +1
+        This function takes a copy of a board, attempts to find a basic
+        solution, calls the complex functions and finally after exhausting
+        all other options performs a backtracking algorithm.
 
-        return(zeros)
-
-
-
-
-    def backTrack(self):
-
-        aim = zeroCheck(self.board)
+        """
+        aim = zero_check(self.board)
 
         if aim == 0:
             return(True)
 
-        neg = self.getMoves()
+        neg = self.get_moves()
 
-    # Do the moves
-        self.addEasy(neg)
-        self.easyRows(neg)
-        self.easyColumns(neg)
-        self.easySquare(neg)
+        # Do the moves
+        self.add_easy(neg)
+        self.easy_rows(neg)
+        self.easy_columns(neg)
+        self.easy_square(neg)
 
-    # Check for new stuff
-        if zeroCheck(self.board) != aim:
+        # Check for new stuff
+        if zero_check(self.board) != aim:
             return(self.backTrack())
 
-
-
-
-        newVals = []
+        new_vals = []
         for row in range(0, 9):
             for col in range(0, 9):
                 if len(neg[row][col]) > 0:
-                    newVals.append([row, col])
+                    new_vals.append([row, col])
 
-
-        if len(newVals) == 0:
+        if len(new_vals) == 0:
             return(False)
         else:
-            for val in newVals:
-                newCop = gameOfSudoku(self.board)
+            for val in new_vals:
+                newCop = GameOfSudoku(self.board)
                 newCop.board[val[0]][val[1]] = neg[val[0]][val[1]]
                 if newCop.backTrack():
                     return(True)
             return(False)
 
 
-
-
-
-
-def checkList(entity):
+def check_list(entity):
+    """Check if a number is repeated in a list of length 9."""
     for key in range(0, 9):
         for compare in range(key+1, 9):
             if (entity[key] == entity[compare]) & (entity[key] != 0):
@@ -267,12 +270,11 @@ def checkList(entity):
     return(True)
 
 
-def zeroCheck(grid):
-
+def zero_check(grid):
+    """Take a 2d grid and calculates number of 0 entries."""
     zeros = 0
     for row in grid:
         for element in row:
             if element == 0:
-                zeros = zeros +1
-
+                zeros += 1
     return(zeros)
