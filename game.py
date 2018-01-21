@@ -5,7 +5,7 @@ Script to solve a sudoku puzzle.
 The algorithm will work by first finding low hanging fruit
 and if no obvious moves available use a standard backtracking algorithm
 
-The sudoku board will be 9x9 list inside list.
+The sudoku board will be 9x9 list inside a list.
 
 First index is row and second index is column
 0 represents empty square
