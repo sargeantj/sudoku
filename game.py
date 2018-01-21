@@ -1,23 +1,41 @@
 """
 
-# Script to solve a sudoku puzzle.
+Script to solve a sudoku puzzle.
 
-# The algorithm will work by first finding low hanging fruit
-# and if no obvious moves available use a standard backtracking algorithm
+The algorithm will work by first finding low hanging fruit
+and if no obvious moves available use a standard backtracking algorithm
 
+The sudoku board will be 9x9 list inside list.
 
-# The sudoku board will be 9x9 list inside list.
-# First index is row and second index is column
-
-# 0 represents empty square
+First index is row and second index is column
+0 represents empty square
 
 """
 
+zeros = [[0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0]]
 
 test = [[8, 0, 0, 4, 0, 0, 6, 0, 1],
         [2, 0, 0, 6, 0, 5, 8, 4, 0],
         [0, 0, 0, 0, 0, 0, 0, 5, 0],
         [0, 0, 6, 5, 4, 0, 0, 0, 8],
+        [5, 0, 0, 0, 0, 0, 0, 1, 0],
+        [0, 0, 1, 8, 2, 0, 0, 0, 3],
+        [0, 0, 0, 0, 0, 0, 0, 9, 0],
+        [6, 0, 0, 1, 0, 8, 4, 7, 0],
+        [3, 0, 0, 9, 0, 0, 1, 0, 5]]
+
+brok = [[8, 0, 0, 4, 0, 0, 6, 0, 1],
+        [2, 0, 0, 6, 0, 5, 8, 4, 0],
+        [0, 0, 0, 0, 0, 0, 0, 5, 0],
+        [5, 0, 6, 5, 4, 0, 0, 0, 8],
         [5, 0, 0, 0, 0, 0, 0, 1, 0],
         [0, 0, 1, 8, 2, 0, 0, 0, 3],
         [0, 0, 0, 0, 0, 0, 0, 9, 0],
@@ -41,10 +59,14 @@ class GameOfSudoku:
     # Parse the inputted board to the game
     def __init__(self, game):
         """__init__ takes a 2d list which becomes the board."""
-        self.board = game
+        self.old = [inner_list[:] for inner_list in game]
+        self.wrong = []
+        self.track = 0
+        self.result = self.back_track([inner_list[:] for inner_list in game])
+        print(self.result)
 
     # Check validity
-    def is_valid(self):
+    def is_valid(self, board):
         """
 
         Check if the initial board makes is valid.
@@ -57,14 +79,14 @@ class GameOfSudoku:
         validity = 0
 
         # Check each row
-        for row in self.board:
+        for row in board:
             if not check_list(row):
                 validity = validity + 1
 
         # Check each column
         for col in range(0, 9):
             flat_col = []
-            for row in self.board:
+            for row in board:
                 flat_col.append(row[col])
             if not check_list(flat_col):
                 validity = validity + 1
@@ -75,7 +97,7 @@ class GameOfSudoku:
                 flat_square = []
                 for col in range(col_start, col_start+3):
                     for row in range(row_start, row_start+3):
-                        flat_square.append(self.board[row][col])
+                        flat_square.append(board[row][col])
                 if not check_list(flat_square):
                     validity = validity + 1
 
@@ -83,7 +105,7 @@ class GameOfSudoku:
         return(validity == 0)
 
     # Possible moves for each cell
-    def available_entries(self, row_loc, col_loc):
+    def available_entries(self, row_loc, col_loc, board):
         """
 
         Obtain possible moves for a individual square.
@@ -95,13 +117,13 @@ class GameOfSudoku:
         # CheckRow
         from_row = []
         for value in range(1, 10):
-            if not (value in self.board[row_loc]):
+            if not (value in board[row_loc]):
                 from_row.append(value)
 
         # Check column
         from_col = []
         flat_col = []
-        for row in self.board:
+        for row in board:
             flat_col.append(row[col_loc])
         for value in range(1, 10):
             if not (value in flat_col):
@@ -130,7 +152,7 @@ class GameOfSudoku:
         flat_square = []
         for col in range(start_col, start_col+3):
             for row in range(start_row, start_row+3):
-                flat_square.append(self.board[row][col])
+                flat_square.append(board[row][col])
         for value in range(1, 10):
             if not (value in flat_square):
                 from_square.append(value)
@@ -144,11 +166,10 @@ class GameOfSudoku:
         return(output)
 
     # Find possible valid moves
-    def get_moves(self):
+    def get_moves(self, board):
         """
 
-        Take the board and return the possible moves for each box in the 9x9
-        grid.
+        Take the board and return the possible moves for each box in the 9x9.
 
         The function creates a negative of the board with every possible move.
 
@@ -158,55 +179,62 @@ class GameOfSudoku:
         for row in range(0, 9):
             rowList = []
             for col in range(0, 9):
-                if self.board[row][col] == 0:
-                    rowList.append(self.availableEntries(row, col))
+                if board[row][col] == 0:
+                    rowList.append(self.available_entries(row, col, board))
                 else:
                     rowList.append([])
             available.append(rowList)
         return(available)
 
     # Easiest moves
-    def add_easy(self, neg):
+    def add_easy(self, neg, input_board):
+        """Add easy one option only moves."""
         for row in range(0, 9):
             for col in range(0, 9):
                 if len(neg[row][col]) == 1:
-                    self.board[row][col] = neg[row][col][0]
+                    input_board[row][col] = neg[row][col][0]
+        return(input_board)
 
     # Easy rows
-    def easy_rows(self, neg):
+    def easy_rows(self, neg, input_board):
+        """If one value can only land in one position of a row then add."""
         for row in range(0, 9):
             for val in range(1, 10):
-                if not (val in self.board[row]):
+                if not (val in input_board[row]):
                     possible = []
                     for col in range(0, 9):
                         if val in neg[row][col]:
                             possible.append(col)
                     if len(possible) == 1:
-                        self.board[row][possible[0]] = val
+                        input_board[row][possible[0]] = val
+        return(input_board)
 
-# Easy columns
-    def easy_columns(self, neg):
+    # Easy columns
+    def easy_columns(self, neg, input_board):
+        """If one value can only land in one position of a column then add."""
         for col in range(0, 9):
             flat_col = []
-            for row in self.board:
+            for row in input_board:
                 flat_col.append(row[col])
             for val in range(1, 10):
                 if not (val in flat_col):
                     possible = []
-                    for secRow in range(0, 9):
-                        if val in neg[secRow][col]:
-                            possible.append(secRow)
+                    for sec_row in range(0, 9):
+                        if val in neg[sec_row][col]:
+                            possible.append(sec_row)
                     if len(possible) == 1:
-                        self.board[possible[0]][col] = val
+                        input_board[possible[0]][col] = val
+        return(input_board)
 
     # Check if there is only one possible value in the square
-    def easy_square(self, neg):
+    def easy_square(self, neg, input_board):
+        """If one value can only land in one position of a square then add."""
         for col_start in [0, 3, 6]:
             for row_start in [0, 3, 6]:
                 flat_square = []
                 for col in range(col_start, col_start+3):
                     for row in range(row_start, row_start+3):
-                        flat_square.append(self.board[row][col])
+                        flat_square.append(input_board[row][col])
                 for val in range(1, 10):
                     if not (val in flat_square):
                         possible = []
@@ -215,9 +243,10 @@ class GameOfSudoku:
                                 if val in neg[row][col]:
                                     possible.append((row, col))
                         if len(possible) == 1:
-                            self.board[possible[0][0]][possible[0][1]] = val
+                            input_board[possible[0][0]][possible[0][1]] = val
+        return(input_board)
 
-    def back_track(self):
+    def back_track(self, board):
         """
 
         Back track recursive function.
@@ -227,22 +256,28 @@ class GameOfSudoku:
         all other options performs a backtracking algorithm.
 
         """
-        aim = zero_check(self.board)
+        aim = zero_check(board)
 
         if aim == 0:
+            self.complete = board
             return(True)
 
-        neg = self.get_moves()
+        neg = self.get_moves(board)
+
+        if self.track % 1000 == 0:
+            print(self.track)
+
+        self.track += 1
 
         # Do the moves
-        self.add_easy(neg)
-        self.easy_rows(neg)
-        self.easy_columns(neg)
-        self.easy_square(neg)
+        board = self.add_easy(neg, [inner_list[:] for inner_list in board])
+        board = self.easy_rows(neg, [inner_list[:] for inner_list in board])
+        board = self.easy_columns(neg, [inner_list[:] for inner_list in board])
+        board = self.easy_square(neg, [inner_list[:] for inner_list in board])
 
         # Check for new stuff
-        if zero_check(self.board) != aim:
-            return(self.backTrack())
+        if zero_check(board) != aim:
+            return(self.back_track(board))
 
         new_vals = []
         for row in range(0, 9):
@@ -251,13 +286,17 @@ class GameOfSudoku:
                     new_vals.append([row, col])
 
         if len(new_vals) == 0:
+            self.wrong.append(board)
             return(False)
         else:
             for val in new_vals:
-                newCop = GameOfSudoku(self.board)
-                newCop.board[val[0]][val[1]] = neg[val[0]][val[1]]
-                if newCop.backTrack():
-                    return(True)
+                for attempt in neg[val[0]][val[1]]:
+                    board[val[0]][val[1]] = attempt
+                    if self.back_track(board):
+                        self.complete = board
+                        return(True)
+                    else:
+                        board[val[0]][val[1]] = 0
             return(False)
 
 
@@ -278,3 +317,9 @@ def zero_check(grid):
             if element == 0:
                 zeros += 1
     return(zeros)
+
+########
+# Back track does not work
+# zeros is broken. pls fix
+# Check how recursion is meant to work in python
+# Problem might be using the same nane for the new class each time
