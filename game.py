@@ -234,11 +234,6 @@ class GameOfSudoku:
 
         neg = self.get_moves(board)
 
-        if self.track % 1000 == 0:
-            print(self.track)
-
-        self.track += 1
-
         # Do the moves
         board = self.add_easy(neg, [inner_list[:] for inner_list in board])
         board = self.easy_rows(neg, [inner_list[:] for inner_list in board])
