@@ -10,7 +10,7 @@ from matplotlib import pyplot as plt
 
 image_str = 3
 
-img = cv2.imread('/home/james/Documents/Practice/sudoku/img/' + str(image_str) + '.jpg', 0)
+img = cv2.imread('/home/james/Documents/Code/sudoku/python-sudoku/img/' + str(image_str) + '.jpg', 0)
 
 ret, thresh = cv2.threshold(img, 120, 255, cv2.THRESH_BINARY)
 
