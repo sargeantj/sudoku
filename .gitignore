@@ -2,3 +2,4 @@
 *.jpg
 *.csv
 /img
+/__pychache__
