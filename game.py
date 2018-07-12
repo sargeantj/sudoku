@@ -33,7 +33,6 @@ class GameOfSudoku:
         self.wrong = []
         self.track = 0
         self.result = self.back_track([inner_list[:] for inner_list in game])
-        print(self.result)
 
     # Check validity
     def is_valid(self, board):
