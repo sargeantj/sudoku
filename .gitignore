@@ -1,5 +1,6 @@
 *.png
 *.jpg
 *.csv
+*.txt
 /img
 /__pycache__
