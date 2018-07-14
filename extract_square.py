@@ -1,4 +1,8 @@
-"""Read in images and binarize to reduce down into a square."""
+"""
+
+Read in images and binarize to reduce down into a square.
+
+"""
 
 
 import cv2
