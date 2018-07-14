@@ -4,3 +4,4 @@
 *.txt
 /img
 /__pycache__
+/--train_dir
