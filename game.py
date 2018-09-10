@@ -71,7 +71,7 @@ class GameOfSudoku:
                     validity = validity + 1
 
         # output
-        return(validity == 0)
+        return validity == 0
 
 
     # Possible moves for each cell
@@ -87,7 +87,7 @@ class GameOfSudoku:
         # CheckRow
         from_row = []
         for value in range(1, 10):
-            if not (value in board[row_loc]):
+            if not value in board[row_loc]:
                 from_row.append(value)
 
         # Check column
@@ -96,7 +96,7 @@ class GameOfSudoku:
         for row in board:
             flat_col.append(row[col_loc])
         for value in range(1, 10):
-            if not (value in flat_col):
+            if not value in flat_col:
                 from_col.append(value)
 
         # Check square
@@ -124,7 +124,7 @@ class GameOfSudoku:
             for row in range(start_row, start_row+3):
                 flat_square.append(board[row][col])
         for value in range(1, 10):
-            if not (value in flat_square):
+            if not value in flat_square:
                 from_square.append(value)
 
         # Check each value is in the all 3 lists
@@ -133,7 +133,7 @@ class GameOfSudoku:
             if (value in from_col) & (value in from_square):
                 output.append(value)
 
-        return(output)
+        return output
 
     # Find possible valid moves
     def get_moves(self, board):
@@ -147,14 +147,14 @@ class GameOfSudoku:
         available = []
         # Iterate through grid
         for row in range(0, 9):
-            rowList = []
+            row_list = []
             for col in range(0, 9):
                 if board[row][col] == 0:
-                    rowList.append(self.available_entries(row, col, board))
+                    row_list.append(self.available_entries(row, col, board))
                 else:
-                    rowList.append([])
-            available.append(rowList)
-        return(available)
+                    row_list.append([])
+            available.append(row_list)
+        return available
 
     # Easiest moves
     def add_easy(self, neg, input_board):
@@ -163,21 +163,21 @@ class GameOfSudoku:
             for col in range(0, 9):
                 if len(neg[row][col]) == 1:
                     input_board[row][col] = neg[row][col][0]
-        return(input_board)
+        return input_board
 
     # Easy rows
     def easy_rows(self, neg, input_board):
         """If one value can only land in one position of a row then add."""
         for row in range(0, 9):
             for val in range(1, 10):
-                if not (val in input_board[row]):
+                if not val in input_board[row]:
                     possible = []
                     for col in range(0, 9):
                         if val in neg[row][col]:
                             possible.append(col)
                     if len(possible) == 1:
                         input_board[row][possible[0]] = val
-        return(input_board)
+        return input_board
 
     # Easy columns
     def easy_columns(self, neg, input_board):
@@ -187,14 +187,14 @@ class GameOfSudoku:
             for row in input_board:
                 flat_col.append(row[col])
             for val in range(1, 10):
-                if not (val in flat_col):
+                if not val in flat_col:
                     possible = []
                     for sec_row in range(0, 9):
                         if val in neg[sec_row][col]:
                             possible.append(sec_row)
                     if len(possible) == 1:
                         input_board[possible[0]][col] = val
-        return(input_board)
+        return input_board
 
     # Check if there is only one possible value in the square
     def easy_square(self, neg, input_board):
@@ -206,7 +206,7 @@ class GameOfSudoku:
                     for row in range(row_start, row_start+3):
                         flat_square.append(input_board[row][col])
                 for val in range(1, 10):
-                    if not (val in flat_square):
+                    if not val in flat_square:
                         possible = []
                         for col in range(col_start, col_start+3):
                             for row in range(row_start, row_start+3):
@@ -214,7 +214,7 @@ class GameOfSudoku:
                                     possible.append((row, col))
                         if len(possible) == 1:
                             input_board[possible[0][0]][possible[0][1]] = val
-        return(input_board)
+        return input_board
 
     def back_track(self, board):
         """
@@ -230,7 +230,7 @@ class GameOfSudoku:
 
         if aim == 0:
             self.complete = board
-            return(True)
+            return True
 
         neg = self.get_moves(board)
 
@@ -242,27 +242,27 @@ class GameOfSudoku:
 
         # Check for new stuff
         if zero_check(board) != aim:
-            return(self.back_track(board))
+            return self.back_track(board)
 
         new_vals = []
         for row in range(0, 9):
             for col in range(0, 9):
-                if len(neg[row][col]) > 0:
+                if neg[row][col]:
                     new_vals.append([row, col])
 
-        if len(new_vals) == 0:
+        if new_vals:
             self.wrong.append(board)
-            return(False)
-        else:
-            for val in new_vals:
-                for attempt in neg[val[0]][val[1]]:
-                    board[val[0]][val[1]] = attempt
-                    if self.back_track(board):
-                        self.complete = board
-                        return(True)
-                    else:
-                        board[val[0]][val[1]] = 0
-            return(False)
+            return False
+
+        for val in new_vals:
+            for attempt in neg[val[0]][val[1]]:
+                board[val[0]][val[1]] = attempt
+                if self.back_track(board):
+                    self.complete = board
+                    return True
+                else:
+                    board[val[0]][val[1]] = 0
+        return False
 
 
 def check_list(entity):
@@ -270,8 +270,8 @@ def check_list(entity):
     for key in range(0, 9):
         for compare in range(key+1, 9):
             if (entity[key] == entity[compare]) & (entity[key] != 0):
-                return(False)
-    return(True)
+                return False
+    return True
 
 
 def zero_check(grid):
@@ -281,4 +281,4 @@ def zero_check(grid):
         for element in row:
             if element == 0:
                 zeros += 1
-    return(zeros)
+    return zeros
