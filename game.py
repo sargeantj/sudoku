@@ -73,6 +73,7 @@ class GameOfSudoku:
         # output
         return(validity == 0)
 
+
     # Possible moves for each cell
     def available_entries(self, row_loc, col_loc, board):
         """

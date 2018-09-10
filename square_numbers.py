@@ -28,11 +28,13 @@ for x in range(9):
 
 
 """
-for x in result:
+for x in resultt:
     plt.figure()
     plt.imshow(x, 'gray')
     plt.show()
 """
+
+
 res1 = result
 
 res2 = result
