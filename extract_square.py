@@ -81,7 +81,8 @@ def extract_sudoku(corners, image):
 
 def extract_square(image_number=1):
     """Given a number of the image file return a cropped sudoku."""
-    image_string = '/home/james/Documents/Code/sudoku/python-sudoku/img/' + str(image_number) + '.jpg'
+    image_string = '/home/james/Documents/Code/sudoku/python-sudoku/img/'
+    image_string += str(image_number) + '.jpg'
 
     binary = read_binary(image_string)
     threshold = get_threshold(binary)
