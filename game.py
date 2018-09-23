@@ -76,12 +76,10 @@ class GameOfSudoku:
     # Possible moves for each cell
     def available_entries(self, row_loc, col_loc, board):
         """
-
         Obtain possible moves for a individual square.
 
         Works by checking what is not currently in the row.
         What is not currently in the column and lastly the square.
-
         """
         # CheckRow
         from_row = []

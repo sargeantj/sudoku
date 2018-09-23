@@ -30,7 +30,7 @@ def one_hot_y(list_y):
 
 
 def get_model():
-    """Return the model used to predict a numbe."""
+    """Return the model used to predict a number."""
     model = kr.models.Sequential()
     model.add(kr.layers.Conv2D(32, input_shape=(1, 33, 33), kernel_size=(5, 5),
                                activation='relu', padding='same'))
