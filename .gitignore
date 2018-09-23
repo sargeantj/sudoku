@@ -2,6 +2,8 @@
 *.jpg
 *.csv
 *.txt
+/.cache
 /img
 /__pycache__
 /--train_dir
+/.ropeproject

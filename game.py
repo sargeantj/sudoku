@@ -73,7 +73,6 @@ class GameOfSudoku:
         # output
         return validity == 0
 
-
     # Possible moves for each cell
     def available_entries(self, row_loc, col_loc, board):
         """
@@ -87,7 +86,7 @@ class GameOfSudoku:
         # CheckRow
         from_row = []
         for value in range(1, 10):
-            if not value in board[row_loc]:
+            if value not in board[row_loc]:
                 from_row.append(value)
 
         # Check column
@@ -96,7 +95,7 @@ class GameOfSudoku:
         for row in board:
             flat_col.append(row[col_loc])
         for value in range(1, 10):
-            if not value in flat_col:
+            if value not in flat_col:
                 from_col.append(value)
 
         # Check square
@@ -124,7 +123,7 @@ class GameOfSudoku:
             for row in range(start_row, start_row+3):
                 flat_square.append(board[row][col])
         for value in range(1, 10):
-            if not value in flat_square:
+            if value not in flat_square:
                 from_square.append(value)
 
         # Check each value is in the all 3 lists
@@ -170,7 +169,7 @@ class GameOfSudoku:
         """If one value can only land in one position of a row then add."""
         for row in range(0, 9):
             for val in range(1, 10):
-                if not val in input_board[row]:
+                if val not in input_board[row]:
                     possible = []
                     for col in range(0, 9):
                         if val in neg[row][col]:
@@ -187,7 +186,7 @@ class GameOfSudoku:
             for row in input_board:
                 flat_col.append(row[col])
             for val in range(1, 10):
-                if not val in flat_col:
+                if val not in flat_col:
                     possible = []
                     for sec_row in range(0, 9):
                         if val in neg[sec_row][col]:
@@ -206,7 +205,7 @@ class GameOfSudoku:
                     for row in range(row_start, row_start+3):
                         flat_square.append(input_board[row][col])
                 for val in range(1, 10):
-                    if not val in flat_square:
+                    if val not in flat_square:
                         possible = []
                         for col in range(col_start, col_start+3):
                             for row in range(row_start, row_start+3):
