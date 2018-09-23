@@ -1,13 +1,10 @@
-"""
-
-Read in images and binarize to reduce down into a square.
-
-"""
+"""Read in images and binarize to reduce down into a square."""
 
 # Packages
 import cv2
 import numpy as np
 import pandas as pd
+
 
 def read_binary(input_string):
     """Read and binarize and image."""
@@ -27,8 +24,9 @@ def get_threshold(image):
 
 
 def get_square_coordinates(image):
-    """Find edges of sudoku using contours"""
-    im2, contours, hierarchy = cv2.findContours(image, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    """Find edges of sudoku using contours."""
+    im2, contours, hierarchy = cv2.findContours(image, cv2.RETR_TREE,
+                                                cv2.CHAIN_APPROX_SIMPLE)
 
     biggest = None
     max_area = 0
@@ -69,7 +67,7 @@ def contour_2_list(contour, image):
 
 
 def extract_sudoku(corners, image):
-    """Using the conrners and image return just the sudoku."""
+    """Use the conrners and image return just the sudoku."""
     pts_from = np.float32(corners)
     pts_to = np.float32([[0, 0], [0, 299], [299, 299], [299, 0]])
 
