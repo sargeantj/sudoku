@@ -79,7 +79,7 @@ def extract_sudoku(corners, image):
 
 def extract_square(image_number=1):
     """Given a number of the image file return a cropped sudoku."""
-    image_string = '/home/james/Documents/Code/sudoku/python-sudoku/img/'
+    image_string = '/home/james/Documents/projects/python-sudoku/img/'
     image_string += str(image_number) + '.jpg'
 
     binary = read_binary(image_string)
@@ -121,7 +121,7 @@ def image_to_csv(image_number):
         result.append(picture_row)
 
     picture_frame = pd.DataFrame(result)
-    picture_frame.to_csv("/home/james/Documents/Code/sudoku/"
+    picture_frame.to_csv("/home/james/Documents/projects/"
                          + 'python-sudoku/training/image_' + str(image_number)
                          + '.csv',
                          header=False, index=False)
@@ -133,7 +133,7 @@ def csv_to_image(image_number):
 
     This is a reverse of the function image_to_csv
     """
-    image = pd.read_csv("/home/james/Documents/Code/sudoku/"
+    image = pd.read_csv("/home/james/Documents/projects/"
                         + 'python-sudoku/training/image_' + str(image_number)
                         + '.csv', header=None)
     result = []
