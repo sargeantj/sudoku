@@ -122,7 +122,7 @@ def image_to_csv(image_number):
 
     picture_frame = pd.DataFrame(result)
     picture_frame.to_csv("/home/james/Documents/projects/"
-                         + 'sudoku/training/image_' + str(image_number)
+                         + 'sudoku/data/image_' + str(image_number)
                          + '.csv',
                          header=False, index=False)
 
@@ -134,7 +134,7 @@ def csv_to_image(image_number):
     This is a reverse of the function image_to_csv
     """
     image = pd.read_csv("/home/james/Documents/projects/"
-                        + 'sudoku/training/image_' + str(image_number)
+                        + 'sudoku/data/image_' + str(image_number)
                         + '.csv', header=None)
     result = []
     for row in range(image.shape[0]):
