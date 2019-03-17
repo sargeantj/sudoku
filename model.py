@@ -30,7 +30,12 @@ def one_hot_y(list_y):
 
 
 def get_model():
-    """Return the model used to predict a number."""
+    """
+    Model defintion.
+
+    One sudoku has 81 sub images.
+    One sample is a 33x33 image.
+    """
     # Sequential Model
     model = kr.models.Sequential()
 
@@ -40,10 +45,11 @@ def get_model():
                                padding='same'))
     model.add(kr.layers.MaxPool2D(pool_size=(2, 2), strides=(2, 2),
                                   padding='same'))
-    model.add(kr.layers.Conv2D(64, kernel_size=(5, 5), activation='relu',
-                               padding='same'))
-    model.add(kr.layers.MaxPool2D(pool_size=(2, 2), strides=(2, 2),
-                                  padding='same'))
+    # model.add(kr.layers.Conv2D(64, kernel_size=(5, 5), activation='relu',
+    #                            padding='same'))
+    # model.add(kr.layers.MaxPool2D(pool_size=(2, 2), strides=(2, 2),
+    #                               padding='same'))
+    model.add(kr.layers.Flatten())
     model.add(kr.layers.Dense(10, activation='relu'))
 
     # Compile
@@ -53,23 +59,25 @@ def get_model():
     return model
 
 
+if __name__ == '__main__':
+    import extract_square as es
+    data = es.csv_to_image(1)
 
-import extract_square as es
-data = es.csv_to_image(1)
+    y = [8, 0, 0, 4, 0, 0, 6, 0, 1, 2, 0, 0, 6, 0, 5, 8, 4, 0, 0, 0, 0, 0, 0,
+         0, 0, 5, 0, 0, 0, 6, 5, 4, 0, 0, 0, 8, 5, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+         0, 1, 8, 2, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 9, 0, 6, 0, 0, 1, 0, 8,
+         4, 7, 0, 3, 0, 0, 9, 0, 0, 1, 0, 5]
 
-y = [8, 0, 0, 4, 0, 0, 6, 0, 1, 2, 0, 0, 6, 0, 5, 8, 4, 0, 0, 0, 0, 0, 0,
-     0, 0, 5, 0, 0, 0, 6, 5, 4, 0, 0, 0, 8, 5, 0, 0, 0, 0, 0, 0, 1, 0, 0,
-     0, 1, 8, 2, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 9, 0, 6, 0, 0, 1, 0, 8,
-     4, 7, 0, 3, 0, 0, 9, 0, 0, 1, 0, 5]
+    one_y = one_hot_y(y)
 
-oney = one_hot_y(y)
+    x = scale_image(data)
 
-x = scale_image(data)
+    q = np.array(x)
 
-q = np.array(x)
+    my_y = np.array(np.array(one_y))
 
-my_y = np.array(np.array(oney))
+    shaped_x = np.reshape(q, (81, 33, 33, 1))
 
-model = get_model()
+    model = get_model()
 
-model.fit(x=q, y=my_y, epochs=10, batch_size=81)
+    model.fit(x=shaped_x, y=my_y, epochs=10, batch_size=81)
