@@ -1,4 +1,4 @@
-"""Minst model refactored using keras api instead of tensorflowself."""
+"""Minst model."""
 
 # Packages
 import numpy as np
@@ -40,15 +40,15 @@ def get_model():
     model = kr.models.Sequential()
 
     # Layers
-    model.add(kr.layers.Conv2D(32, input_shape=(33, 33, 1),
+    model.add(kr.layers.Conv2D(64, input_shape=(33, 33, 1),
                                kernel_size=(5, 5), activation='relu',
                                padding='same'))
     model.add(kr.layers.MaxPool2D(pool_size=(2, 2), strides=(2, 2),
                                   padding='same'))
-    # model.add(kr.layers.Conv2D(64, kernel_size=(5, 5), activation='relu',
-    #                            padding='same'))
-    # model.add(kr.layers.MaxPool2D(pool_size=(2, 2), strides=(2, 2),
-    #                               padding='same'))
+    model.add(kr.layers.Conv2D(32, kernel_size=(5, 5), activation='relu',
+                               padding='same'))
+    model.add(kr.layers.MaxPool2D(pool_size=(2, 2), strides=(2, 2),
+                                  padding='same'))
     model.add(kr.layers.Flatten())
     model.add(kr.layers.Dense(10, activation='relu'))
 
@@ -80,4 +80,4 @@ if __name__ == '__main__':
 
     model = get_model()
 
-    model.fit(x=shaped_x, y=my_y, epochs=10, batch_size=81)
+    model.fit(x=shaped_x, y=my_y, epochs=10, batch_size=32)
