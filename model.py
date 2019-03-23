@@ -5,9 +5,10 @@ import numpy as np
 from tensorflow import keras as kr
 
 
-def scale_image(images):
+def scale_image(image, bulk=False):
     """Scale the images to [0, 1]."""
     result = []
+    images = image if bulk else [image]
     for subimage in images:
         current = []
         for row in subimage:
