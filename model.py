@@ -29,55 +29,88 @@ def one_hot_y(list_y):
     return result
 
 
-def get_model():
-    """
-    Model defintion.
+def reverse_one_hot(array_y):
+    """Revers encode a list y."""
+    result = []
+    for encoded_array in array_y:
+        max = 0
+        for index, value in enumerate(encoded_array):
+            if value > max:
+                prediction = index
+                max = value
+        result.append(prediction)
+    return result
 
-    One sudoku has 81 sub images.
-    One sample is a 33x33 image.
-    """
-    # Sequential Model
-    model = kr.models.Sequential()
 
-    # Layers
-    model.add(kr.layers.Conv2D(64, input_shape=(33, 33, 1),
-                               kernel_size=(5, 5), activation='relu',
-                               padding='same'))
-    model.add(kr.layers.MaxPool2D(pool_size=(2, 2), strides=(2, 2),
-                                  padding='same'))
-    model.add(kr.layers.Conv2D(32, kernel_size=(5, 5), activation='relu',
-                               padding='same'))
-    model.add(kr.layers.MaxPool2D(pool_size=(2, 2), strides=(2, 2),
-                                  padding='same'))
-    model.add(kr.layers.Flatten())
-    model.add(kr.layers.Dense(10, activation='relu'))
+class Model(object):
+    """Keras MINST model."""
 
-    # Compile
-    model.compile(optimizer='adam', loss='categorical_crossentropy')
+    def __init__(self):
+        """Init."""
+        pass
 
-    # Return the model
-    return model
+    def get_model(self):
+        """
+        Assign model to a new compiled Model defintion.
+
+        One sudoku has 81 sub images.
+        One sample is a 33x33 image.
+        Input shape is (33, 33, 1)
+        """
+        # Sequential Model
+        model = kr.models.Sequential()
+
+        # Layers
+        model.add(kr.layers.Conv2D(64, input_shape=(33, 33, 1),
+                                   kernel_size=(5, 5), activation='relu',
+                                   padding='same'))
+        model.add(kr.layers.MaxPool2D(pool_size=(2, 2), strides=(2, 2),
+                                      padding='same'))
+        model.add(kr.layers.Conv2D(32, kernel_size=(5, 5), activation='relu',
+                                   padding='same'))
+        model.add(kr.layers.MaxPool2D(pool_size=(2, 2), strides=(2, 2),
+                                      padding='same'))
+        model.add(kr.layers.Flatten())
+        model.add(kr.layers.Dense(10, activation='softmax'))
+
+        # Compile
+        model.compile(optimizer=kr.optimizers.Adam(lr=0.0001, clipnorm=1),
+                      loss='categorical_crossentropy')
+
+        self.model = model
+
+    def save(self):
+        """Save the model."""
+        self.model.save(
+            '/home/james/Documents/projects/sudoku/model/model.hdf')
+
+    def load(self):
+        """Load the model."""
+        self.model = kr.models.load_model(
+            '/home/james/Documents/projects/sudoku/model/model.hdf')
 
 
 if __name__ == '__main__':
-    import extract_square as es
-    data = es.csv_to_image(1)
+    from data import get_x_y
+    x, y = get_x_y()
 
-    y = [8, 0, 0, 4, 0, 0, 6, 0, 1, 2, 0, 0, 6, 0, 5, 8, 4, 0, 0, 0, 0, 0, 0,
-         0, 0, 5, 0, 0, 0, 6, 5, 4, 0, 0, 0, 8, 5, 0, 0, 0, 0, 0, 0, 1, 0, 0,
-         0, 1, 8, 2, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 9, 0, 6, 0, 0, 1, 0, 8,
-         4, 7, 0, 3, 0, 0, 9, 0, 0, 1, 0, 5]
+    mod = Model()
+    mod.get_model()
 
-    one_y = one_hot_y(y)
+    train_x = x[:704]
+    train_y = y[:704]
 
-    x = scale_image(data)
+    mod.model.fit(train_x, train_y, epochs=500, batch_size=128)
 
-    q = np.array(x)
+    preds = mod.model.predict(x[700:])
 
-    my_y = np.array(np.array(one_y))
+    truth = reverse_one_hot(y[700:])
 
-    shaped_x = np.reshape(q, (81, 33, 33, 1))
+    preds = reverse_one_hot(preds)
 
-    model = get_model()
+    # df check
+    import pandas as pd
+    df = pd.DataFrame({'truth': truth, 'preds': preds})
+    df['correct'] = df['truth'] == df['preds']
 
-    model.fit(x=shaped_x, y=my_y, epochs=10, batch_size=32)
+    print(df['correct'].value_counts())

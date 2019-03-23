@@ -13,9 +13,8 @@ First index is row and second index is column
 """
 
 
-class GameOfSudoku:
+class GameOfSudoku(object):
     """
-
     Class which takes a unsolved puzzle and solves it.
 
     This class contains a check functions is_valid & check_list.
@@ -23,7 +22,6 @@ class GameOfSudoku:
     Also there are three functions which add elements to the board.
     The final function contains a backtracking recursive function
     which also can return the faliure conditon if reached.
-
     """
 
     # Parse the inputted board to the game
