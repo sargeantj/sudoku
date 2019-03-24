@@ -13,10 +13,5 @@ def numeric_image():
     print(r)
 
 
-def raw_image():
-    """Make a request with an image."""
-    img = cv2.imread(input_string)
-    r = requests.post('http://localhost:5000', data={'image': img})
-
-
 if __name__ == '__main__':
+    pass
