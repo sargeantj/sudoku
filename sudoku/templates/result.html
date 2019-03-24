@@ -7,6 +7,18 @@
 </head>
 
 <body>
-  <p>{{result}}</p>
+  <table class="gameTable" border="1">
+      {% for row in range(0,9) %}
+          <tr>
+              {% for col in range(0,9) %}
+                  {% if result[row][col] == 0 %}
+                      <td><input type="text" size="1" maxlength="1"/></td>
+                  {% else %}
+                      <td> {{ result[row][col] }} </td>
+                  {% endif %}
+              {% endfor %}
+          </tr>
+      {% endfor %}
+  </table>
 </body>
 </html>
