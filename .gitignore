@@ -10,3 +10,4 @@
 /.ropeproject
 /data
 /model
+!requirements.txt
