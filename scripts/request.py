@@ -1,7 +1,10 @@
 """Tes the api by making a call."""
 
 import requests
-from extract_square import csv_to_image
+from sudoku.core.extract_square import csv_to_image
+import os
+
+os.chdir('..')
 
 
 def numeric_image():

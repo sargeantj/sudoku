@@ -2,7 +2,7 @@
 
 from flask import Flask
 from flask_restful import Api, Resource, reqparse
-from model import Model, scale_image, reverse_one_hot
+from core.model import Model, scale_image, reverse_one_hot
 import tensorflow as tf
 import numpy as np
 

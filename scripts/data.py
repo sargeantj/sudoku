@@ -3,7 +3,10 @@
 # Packages
 import numpy as np
 import extract_square as es
-import model as md
+import sudoku.core.model as md
+import os
+
+os.chdir('..')
 
 
 def get_x_y():

@@ -2,7 +2,7 @@
 
 
 import unittest
-import game as gm
+import sudoku.core.game as gm
 
 
 class TestGameMethods(unittest.TestCase):
