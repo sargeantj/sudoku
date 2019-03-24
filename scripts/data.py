@@ -2,7 +2,7 @@
 
 # Packages
 import numpy as np
-import extract_square as es
+import sudoku.core.extract_square as es
 import sudoku.core.model as md
 import os
 
