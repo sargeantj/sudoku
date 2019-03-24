@@ -20,5 +20,13 @@
           </tr>
       {% endfor %}
   </table>
+
+  <form action="/upload" method="post" enctype="multipart/form-data" >
+       <span class="btn btn-default btn-file">
+         Try a different image? <input type="file" name="image">
+       </span>
+
+     <input type="submit" value="Upload your image" class="btn btn-primary">
+   </form>
 </body>
 </html>
