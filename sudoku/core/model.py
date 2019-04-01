@@ -82,9 +82,9 @@ class Model(object):
     def save(self):
         """Save the model."""
         self.model.save(
-            '/home/james/Documents/projects/sudoku/model/model.hdf')
+            '/model/model.hdf')
 
     def load(self):
         """Load the model."""
         self.model = kr.models.load_model(
-            '/home/james/Documents/projects/sudoku/model/model.hdf')
+            '/model/model.hdf')

@@ -1,0 +1,7 @@
+.git
+.ropeproject
+.__pycache__
+*.pyc
+.img
+.data
+.test
