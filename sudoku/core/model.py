@@ -88,29 +88,3 @@ class Model(object):
         """Load the model."""
         self.model = kr.models.load_model(
             '/home/james/Documents/projects/sudoku/model/model.hdf')
-
-
-if __name__ == '__main__':
-    from data import get_x_y
-    x, y = get_x_y()
-
-    mod = Model()
-    mod.get_model()
-
-    train_x = x[:704]
-    train_y = y[:704]
-
-    mod.model.fit(train_x, train_y, epochs=500, batch_size=128)
-
-    preds = mod.model.predict(x[700:])
-
-    truth = reverse_one_hot(y[700:])
-
-    preds = reverse_one_hot(preds)
-
-    # df check
-    import pandas as pd
-    df = pd.DataFrame({'truth': truth, 'preds': preds})
-    df['correct'] = df['truth'] == df['preds']
-
-    print(df['correct'].value_counts())

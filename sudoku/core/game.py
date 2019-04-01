@@ -1,5 +1,4 @@
 """
-
 Script to solve a sudoku puzzle.
 
 The algorithm will work by first finding low hanging fruit
@@ -9,7 +8,6 @@ The sudoku board will be 9x9 list inside a list.
 
 First index is row and second index is column
 0 represents empty square
-
 """
 
 
@@ -35,12 +33,10 @@ class GameOfSudoku(object):
     # Check validity
     def is_valid(self, board):
         """
-
         Check if the initial board makes is valid.
 
         The function takes the class GameOfSudoku and checks the board.
         Normal errors are duplicated entries in the same row, box or columns.
-
         """
         # Valid key
         validity = 0
@@ -213,13 +209,11 @@ class GameOfSudoku(object):
 
     def back_track(self, board):
         """
-
         Back track recursive function.
 
         This function takes a copy of a board, attempts to find a basic
         solution, calls the complex functions and finally after exhausting
         all other options performs a backtracking algorithm.
-
         """
         aim = zero_check(board)
 
