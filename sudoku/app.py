@@ -33,7 +33,10 @@ def home():
 def upload_image():
     """Upload image route."""
     file = request.files['image']
-    result = process_image(file.read())
+    try:
+        result = process_image(file.read())
+    except Exception as e:
+        return render_template('error.html', error=e.args)
     return render_template('result.html', result=result)
 
 
@@ -57,21 +60,24 @@ def process_image(image):
     # Tensorflow
     global graph
     with graph.as_default():
-        # Extract the game from the image.
-        game_square = extract_square_from_image(image)
-        game_images = partition(game_square)
+        try:
+            # Extract the game from the image.
+            game_square = extract_square_from_image(image)
+            game_images = partition(game_square)
 
-        # Call the model
-        scaled_data = scale_image(game_images)
-        array = np.array(scaled_data)
-        prediction = model.model.predict(array)
-        result = reverse_one_hot(prediction)
-        raw = numbers_to_game(result)
-        Game = GameOfSudoku(raw)
-        if Game.result:
-            return Game.complete
-        else:
-            return 'Something went wrong'
+            # Call the model
+            scaled_data = scale_image(game_images)
+            array = np.array(scaled_data)
+            prediction = model.model.predict(array)
+            result = reverse_one_hot(prediction)
+            raw = numbers_to_game(result)
+            Game = GameOfSudoku(raw)
+            if Game.result:
+                return Game.complete
+            else:
+                raise ValueError('No sudoku found')
+        except Exception as e:
+            raise e
 
 
 if __name__ == '__main__':
