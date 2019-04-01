@@ -1,4 +1,4 @@
-Image sudoku solver.
+# Image Sudoku Solver.
 
-Successful implementation will take an image as an input and output a solved sudoku.
-Using binarization, neural network character recognition and recursion to solve the board.
+A simple web-app which uploads an image, converts the board into a numerical representation, then solves the problem usinga reccursive backtrack solution. Image processing implemented using TensorFlow and OpenCV.
+
