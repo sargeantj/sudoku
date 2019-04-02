@@ -5,10 +5,12 @@ python:
 # Install dependencies
 install:
   - pip install -r requirements.txt -q
+  - pip install python-coveralls
+  - pip insatll nose
 
 # Run the tests
 script:
-  - python -m pytest test/
+  - nosetests --wtih-coverage
 
 # Code coverage
 after_success:

@@ -84,7 +84,6 @@ class Model(object):
         self.model.save(
             '/model/model.hdf')
 
-    def load(self):
+    def load(self, work_directory):
         """Load the model."""
-        self.model = kr.models.load_model(
-            '/model/model.hdf')
+        self.model = kr.models.load_model(work_directory + '/model/model.hdf')

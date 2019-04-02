@@ -18,7 +18,7 @@ app.config['UPLOAD_FOLDER'] = os.getcwd() + UPLOAD_FOLDER
 
 # Load the model into memory
 model = Model()
-model.load()
+model.load(os.getcwd())
 # Clear tensorflow
 graph = tf.get_default_graph()
 
