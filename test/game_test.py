@@ -10,7 +10,7 @@ class TestGameMethods(unittest.TestCase):
 
     def test_check_list(self):
         """Test of check_list."""
-        self.assertTrue(gm.check_list([1, 2, 3, 4, 5, 6, 7, 8, 9]))
+        self.assertTrue(gm.check_list([2, 2, 3, 4, 5, 6, 7, 8, 9]))
         self.assertTrue(gm.check_list([1, 0, 3, 0, 0, 6, 0, 8, 9]))
         self.assertFalse(gm.check_list([1, 1, 0, 0, 0, 0, 0, 0, 3]))
 
