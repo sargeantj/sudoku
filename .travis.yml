@@ -5,8 +5,6 @@ python:
 # Install dependencies
 install:
   - pip install -r requirements.txt -q
-  - pip install python-coveralls
-  - pip install nose
 
 # Run the tests
 script:
