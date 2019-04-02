@@ -9,3 +9,7 @@ install:
 # Run the tests
 script:
   - python -m pytest test/
+
+# Code coverage
+after_success:
+  - coveralls
