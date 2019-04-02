@@ -1,9 +1,9 @@
-*.pngpython -m pytest test/
-  - coverage run sudoku/app.py
+*.png
 *.jpg
 *.csv
 *.txt
 *.pyc
+.coverage
 /.cache
 /.pytest_cache
 /img
