@@ -8,7 +8,7 @@ install:
 
 # Run the tests
 script:
-  - nosetests --wtih-coverage
+  - nosetests --with-coverage
 
 # Code coverage
 after_success:
