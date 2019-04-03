@@ -20,10 +20,10 @@ class TestModel(unittest.TestCase):
     def test_save(self):
         """Test save."""
         import os
-        self.model.save(os.getcwd(), name='TEST')
+        self.model.save(os.getcwd(), folder='', name='TEST')
 
     def test_load(self):
         """Test load."""
         import os
-        self.model.save(os.getcwd(), name='TEST')
-        self.model.load(os.getcwd(), name='TEST')
+        self.model.save(os.getcwd(), folder='', name='TEST')
+        self.model.load(os.getcwd(), folder='', name='TEST')
