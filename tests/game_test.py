@@ -155,7 +155,3 @@ class TestUnitSudoku(unittest.TestCase):
     def test_easy_square(self):
         """Test easy_square."""
         pass
-
-
-if __name__ == '__main__':
-    unittest.main()
