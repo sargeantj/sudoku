@@ -79,11 +79,11 @@ class Model(object):
 
         self.model = model
 
-    def save(self, work_directory, name=''):
+    def save(self, work_directory, folder='/model/', name=''):
         """Save the model."""
-        self.model.save(work_directory + '/model/model' + name + '.hdf')
+        self.model.save(work_directory + folder + 'model' + name + '.hdf')
 
-    def load(self, work_directory, name=''):
+    def load(self, work_directory, folder='/model/', name=''):
         """Load the model."""
         self.model = kr.models.load_model(
-            work_directory + '/model/model' + name + '.hdf')
+            work_directory + folder + 'model' + name + '.hdf')
