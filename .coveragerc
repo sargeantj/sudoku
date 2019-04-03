@@ -1,4 +1,4 @@
 [report]
 omit =
-    */test/*
+    */tests/*
     */scripts/*
