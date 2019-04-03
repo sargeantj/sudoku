@@ -28,7 +28,9 @@ class GameOfSudoku(object):
         self.old = [inner_list[:] for inner_list in game]
         self.wrong = []
         self.track = 0
-        self.result = self.back_track([inner_list[:] for inner_list in game])
+        self.back_track = self.back_track(
+            [inner_list[:] for inner_list in game])
+        self.result = self.is_valid(self.complete)
 
     # Check validity
     def is_valid(self, board):

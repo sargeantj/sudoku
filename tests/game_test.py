@@ -49,7 +49,7 @@ class TestGameMethods(unittest.TestCase):
             [0, 0, 0, 0, 0, 0, 0, 0, 0]]), 63)
 
 
-class TestGameOfSudoku(unittest.TestCase):
+class TestIntergrationSudoku(unittest.TestCase):
     """Test a game of Sudoku."""
 
     def test_full_process(self):
@@ -73,6 +73,88 @@ class TestGameOfSudoku(unittest.TestCase):
              [4, 1, 8, 2, 5, 7, 3, 9, 6],
              [6, 5, 9, 1, 3, 8, 4, 7, 2],
              [3, 2, 7, 9, 6, 4, 1, 8, 5]])
+
+        self.assertFalse(gm.GameOfSudoku([[7, 7, 0, 0, 0, 7, 0, 1, 0],
+                                          [0, 3, 1, 0, 0, 6, 0, 0, 9],
+                                          [0, 7, 0, 0, 1, 4, 5, 0, 0],
+                                          [2, 0, 0, 0, 9, 0, 1, 5, 3],
+                                          [7, 0, 8, 0, 0, 1, 4, 0, 0],
+                                          [0, 0, 0, 4, 0, 0, 0, 0, 0],
+                                          [0, 8, 6, 0, 7, 0, 0, 3, 0],
+                                          [0, 0, 7, 0, 0, 0, 8, 9, 0],
+                                          [3, 0, 0, 0, 2, 5, 0, 0, 0]]).result)
+
+        self.assertEqual(gm.GameOfSudoku([[0, 9, 0, 6, 0, 8, 0, 1, 0],
+                                          [7, 0, 0, 0, 0, 0, 0, 0, 3],
+                                          [0, 5, 0, 7, 3, 2, 0, 8, 0],
+                                          [0, 2, 3, 4, 0, 5, 7, 6, 0],
+                                          [8, 0, 0, 0, 0, 0, 0, 0, 4],
+                                          [0, 0, 0, 1, 2, 6, 0, 0, 0],
+                                          [2, 0, 0, 9, 0, 7, 0, 0, 8],
+                                          [0, 0, 9, 0, 0, 0, 4, 0, 0],
+                                          [0, 0, 0, 0, 5, 0, 0, 0, 0]]).old,
+                         [[0, 9, 0, 6, 0, 8, 0, 1, 0],
+                          [7, 0, 0, 0, 0, 0, 0, 0, 3],
+                          [0, 5, 0, 7, 3, 2, 0, 8, 0],
+                          [0, 2, 3, 4, 0, 5, 7, 6, 0],
+                          [8, 0, 0, 0, 0, 0, 0, 0, 4],
+                          [0, 0, 0, 1, 2, 6, 0, 0, 0],
+                          [2, 0, 0, 9, 0, 7, 0, 0, 8],
+                          [0, 0, 9, 0, 0, 0, 4, 0, 0],
+                          [0, 0, 0, 0, 5, 0, 0, 0, 0]])
+
+
+class TestUnitSudoku(unittest.TestCase):
+    """Unit tests of Sudoku class methods."""
+
+    def setUp(self):
+        """Set up for test methods."""
+        self.game = gm.GameOfSudoku([[0, 0, 0, 0, 0, 0, 7, 0, 0],
+                                     [0, 0, 0, 1, 0, 7, 6, 0, 0],
+                                     [0, 9, 1, 0, 0, 0, 0, 5, 8],
+                                     [0, 0, 0, 0, 7, 3, 0, 4, 0],
+                                     [4, 7, 6, 0, 0, 9, 0, 0, 0],
+                                     [5, 0, 0, 0, 0, 0, 0, 9, 0],
+                                     [2, 4, 0, 0, 9, 0, 5, 0, 0],
+                                     [0, 0, 9, 0, 3, 0, 8, 0, 0],
+                                     [1, 0, 7, 8, 4, 0, 0, 0, 0]])
+
+    def test_is_valid(self):
+        """Test is_valid."""
+        self.assertTrue(self.game.is_valid(self.game.old))
+        self.assertTrue(self.game.is_valid(self.game.complete))
+
+        self.game.complete[0][6] = 6
+        self.assertFalse(self.game.is_valid(self.game.complete))
+
+    def test_available_entries(self):
+        """Test available_entries."""
+        self.assertEquals(self.game.available_entries(0, 0, self.game.old),
+                          [3, 6, 8])
+
+        self.assertEquals(self.game.available_entries(
+            0, 0, self.game.complete), [])
+
+    def test_get_moves(self):
+        """Test get_moves."""
+        # TODO
+        pass
+
+    def test_add_easy(self):
+        """Test add_easy."""
+        pass
+
+    def test_easy_rows(self):
+        """Test easy_rows."""
+        pass
+
+    def test_easy_columns(self):
+        """Test easy_columns."""
+        pass
+
+    def test_easy_square(self):
+        """Test easy_square."""
+        pass
 
 
 if __name__ == '__main__':
